@@ -49,7 +49,7 @@
             // 
             this.cmdSave.Location = new System.Drawing.Point(398, 9);
             this.cmdSave.Name = "cmdSave";
-            this.cmdSave.Size = new System.Drawing.Size(75, 23);
+            this.cmdSave.Size = new System.Drawing.Size(50, 23);
             this.cmdSave.TabIndex = 1;
             this.cmdSave.Text = "...";
             this.cmdSave.UseVisualStyleBackColor = true;
@@ -86,7 +86,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(482, 77);
+            this.ClientSize = new System.Drawing.Size(456, 77);
             this.Controls.Add(this.numScreenSize);
             this.Controls.Add(this.cmdStart);
             this.Controls.Add(this.cmdSave);

@@ -44,8 +44,8 @@ namespace AVITools {
 
 			BitmapData bmpDat = bmp.LockBits(
 				new Rectangle(0, 0, bmp.Width, bmp.Height),
-				ImageLockMode.ReadOnly,PixelFormat.Format24bppRgb);
-
+				ImageLockMode.ReadOnly,bmp.PixelFormat);
+            
 			if (countFrames == 0) {
 				//this is the first frame - get size and create a new stream
 				this.stride = (UInt32)bmpDat.Stride;
@@ -105,13 +105,12 @@ namespace AVITools {
 			if(result != 0){ throw new Exception("Error in AVIFileCreateStream: "+result.ToString()); }
 
 			//define the image format
-
 			Avi.BITMAPINFOHEADER bi = new Avi.BITMAPINFOHEADER();
 			bi.biSize      = (UInt32)Marshal.SizeOf(bi);
 			bi.biWidth     = (Int32) width;
 			bi.biHeight    = (Int32) height;
 			bi.biPlanes    = 1;
-			bi.biBitCount  = 24;
+			bi.biBitCount  = 32;
 			bi.biSizeImage = (UInt32)(stride*height);
             oldStream = aviStream;
             aviStream = CreateCompressedStream(aviStream);
@@ -128,11 +127,11 @@ namespace AVITools {
             options.lpFormat = IntPtr.Zero;
 
             //display the compression options dialog
-
             Avi.AVISaveOptions(
               IntPtr.Zero,
               Avi.ICMF_CHOOSE_KEYFRAME | Avi.ICMF_CHOOSE_DATARATE,
               1, ref aviStream, ref options);
+            options.dwQuality = 10000;
             //Avi.AVISaveOptionsFree(1, ref options);
 
             //get a compressed stream
@@ -146,9 +145,6 @@ namespace AVITools {
 
 
             return compressedStream;
-            //format the compressed stream
-
-            //SetFormat(compressedStream);
         }
 	}
 }

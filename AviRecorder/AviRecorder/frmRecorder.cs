@@ -51,7 +51,6 @@ namespace AviRecorder
         public frmRecorder()
         {
             InitializeComponent();
-            aviRec = new AviWriterCompress();
             aviBits = new List<Image>();
             sc = new ScreenShotDemo.ScreenCapture();
             numScreenSize.Value = sizeImage;
@@ -77,7 +76,10 @@ namespace AviRecorder
             txtAviFile.Enabled = false;
             cmdSave.Enabled = false;
             File.Create(txtAviFile.Text).Close();
-            aviRec.Open(txtAviFile.Text,10);
+            aviRec = null;
+            aviRec = new AviWriterCompress();
+            aviRec.Open(txtAviFile.Text,(uint)(1000D / (double)CaptureScreenTime.Interval - 13));
+            CaptureImage();
             CaptureScreenTime.Enabled = true;
         }
 
@@ -88,23 +90,27 @@ namespace AviRecorder
         {
             cmdStart.Text = "Start";
             CaptureScreenTime.Enabled = false;
-            
             aviRec.Close();
-            
-            txtAviFile.Enabled = true;
             cmdSave.Enabled = true;
+            txtAviFile.Enabled = true;
         }
 
         private void CaptureScreenTime_Tick(object sender, EventArgs e)
         {
-            //aviBits.Add(sc.CaptureScreen().GetThumbnailImage(rec.Width / sizeImage, rec.Height / sizeImage, null, IntPtr.Zero));
-            CaptureScreenTime.Enabled = false;
-            aviRec.AddFrame((Bitmap)sc.CaptureScreen().GetThumbnailImage(rec.Width / sizeImage, rec.Height / sizeImage, null, IntPtr.Zero));
-            CaptureScreenTime.Enabled = true;
-            //if (aviBits.Count <= Counter)
-            //{
-            //    addFrames();
-            //}
+            CaptureImage();
+        }
+
+        private void CaptureImage()
+        {
+            //Make sure the image gets disposed once added to avi recorder
+            Image mainImage = sc.CaptureScreen();
+            Image littleImage = mainImage.GetThumbnailImage(rec.Width / sizeImage, rec.Height / sizeImage, null, IntPtr.Zero);
+            using (Bitmap screenCaptured = (Bitmap)littleImage)
+            {
+                aviRec.AddFrame(screenCaptured);
+            }
+            littleImage.Dispose();
+            mainImage.Dispose();
         }
 
         /// <summary>

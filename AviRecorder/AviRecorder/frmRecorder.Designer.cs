@@ -71,7 +71,7 @@
             // 
             // CaptureScreenTime
             // 
-            this.CaptureScreenTime.Interval = 50;
+            this.CaptureScreenTime.Interval = 40;
             this.CaptureScreenTime.Tick += new System.EventHandler(this.CaptureScreenTime_Tick);
             // 
             // numScreenSize

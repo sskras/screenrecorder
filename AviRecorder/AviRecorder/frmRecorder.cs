@@ -14,14 +14,40 @@ namespace AviRecorder
 {
     public partial class frmRecorder : Form
     {
-
+        /// <summary>
+        /// The AVI Writer class
+        /// </summary>
         private AviWriterCompress aviRec;
+        
+        /// <summary>
+        /// Holds and array of bitmap images
+        /// This was use to speed up the video recording process
+        /// </summary>
         private List<Image> aviBits;
+
+        /// <summary>
+        /// Used for capturing the main screen
+        /// </summary>
         private ScreenShotDemo.ScreenCapture sc;
+
+        /// <summary>
+        /// Rectangle object to hold the screenboundries
+        /// </summary>
         private Rectangle rec = Screen.PrimaryScreen.Bounds;
+
+        /// <summary>
+        /// Used for dividing against the screen size to reduce the image data size in bytes
+        /// </summary>
         private int sizeImage = 4;
+
+        /// <summary>
+        /// Counts the amount of frames to be stored before pushing them to the avi stream
+        /// </summary>
         private int Counter = 20;
 
+        /// <summary>
+        /// Contructor for making the frmRecorder GUI
+        /// </summary>
         public frmRecorder()
         {
             InitializeComponent();
@@ -42,6 +68,9 @@ namespace AviRecorder
             }
         }
 
+        /// <summary>
+        /// Function which starts the video recording
+        /// </summary>
         private void StartVid()
         {
             cmdStart.Text = "Stop";
@@ -52,6 +81,9 @@ namespace AviRecorder
             CaptureScreenTime.Enabled = true;
         }
 
+        /// <summary>
+        /// Function which stops the video recording
+        /// </summary>
         private void StopVid()
         {
             cmdStart.Text = "Start";
@@ -75,6 +107,9 @@ namespace AviRecorder
             //}
         }
 
+        /// <summary>
+        /// Add the frames from the aviBits array
+        /// </summary>
         private void addFrames()
         {
             CaptureScreenTime.Enabled = false;
@@ -84,8 +119,6 @@ namespace AviRecorder
                 img.Dispose();
             }
             aviBits.Clear();
-            
-            //System.GC.ReRegisterForFinalize(aviBits);
             aviBits = null;
             aviBits = new List<Image>();
             CaptureScreenTime.Enabled = true;

@@ -1,0 +1,1 @@
+Captures the screen and records every capture to an AVI video.
